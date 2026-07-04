@@ -47,6 +47,7 @@ const browseHint = document.getElementById("browseHint");
 let currentFilter = "all";
 
 let currentCode = null;
+let currentRecords = [];
 let isAdmin = false;
 let adminClient = null; // 관리자 코드가 헤더로 실리는 전용 클라이언트
 
@@ -117,6 +118,7 @@ function renderCard(code, records) {
   cardTab.textContent = "CASE FILE";
   recordList.innerHTML = "";
   stampSlot.innerHTML = "";
+  currentRecords = records;
 
   if (records.length === 0) {
     emptyState.hidden = false;
@@ -139,8 +141,36 @@ function renderCard(code, records) {
       <div class="record-body"></div>
     `;
     li.querySelector(".record-body").textContent = r.content;
+
+    if (isAdmin) {
+      const delBtn = document.createElement("button");
+      delBtn.className = "record-delete";
+      delBtn.type = "button";
+      delBtn.textContent = "삭제";
+      delBtn.addEventListener("click", () => deleteRecord(r.id));
+      li.appendChild(delBtn);
+    }
+
     recordList.appendChild(li);
   }
+}
+
+/* ---------- 기록 삭제 ---------- */
+async function deleteRecord(id) {
+  if (!adminClient) return;
+  const ok = window.confirm("이 기록을 삭제할까요? 되돌릴 수 없습니다.");
+  if (!ok) return;
+
+  const { error } = await adminClient.from("sanction_records").delete().eq("id", id);
+
+  if (error) {
+    searchHint.textContent = "삭제 실패: " + error.message;
+    searchHint.className = "hint error";
+    return;
+  }
+
+  if (currentCode) searchCode();
+  loadBrowseList(currentFilter);
 }
 
 /* ---------- 전체 기록 목록 ---------- */
@@ -194,6 +224,18 @@ async function loadBrowseList(category) {
       searchCode();
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
+
+    if (isAdmin) {
+      const delBtn = document.createElement("button");
+      delBtn.className = "browse-delete";
+      delBtn.type = "button";
+      delBtn.textContent = "삭제";
+      delBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        deleteRecord(r.id);
+      });
+      li.appendChild(delBtn);
+    }
 
     browseList.appendChild(li);
   }
@@ -264,11 +306,15 @@ async function submitLogin() {
 
   closeLogin();
   updateAdminUI();
+  if (currentCode) searchCode();
+  loadBrowseList(currentFilter);
 }
 
 function logout() {
   clearAdmin();
   updateAdminUI();
+  if (currentCode) searchCode();
+  loadBrowseList(currentFilter);
 }
 
 /* ---------- 이벤트 바인딩 ---------- */

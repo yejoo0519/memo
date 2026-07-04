@@ -211,8 +211,23 @@ body{
 }
 .record-item{
   border-left: 3px solid #b8ae90;
-  padding: 4px 0 4px 12px;
+  padding: 4px 60px 4px 12px;
+  position: relative;
 }
+.record-delete{
+  position: absolute;
+  top: 2px;
+  right: 0;
+  background: transparent;
+  border: 1px solid #b8ae90;
+  color: #8a2f24;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  padding: 3px 9px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.record-delete:hover{ background: var(--stamp-red); color:#FBF7EC; border-color: var(--stamp-red); }
 .record-item.cat-계정회수{ border-left-color: var(--stamp-red); }
 .record-item.cat-버그악용제재{ border-left-color: #b5651d; }
 .record-item.cat-기타메모{ border-left-color: #6b7c8e; }
@@ -461,6 +476,18 @@ body{
   color: var(--text-dim);
   flex-shrink: 0;
 }
+.browse-delete{
+  background: transparent;
+  border: 1px solid var(--hairline);
+  color: var(--stamp-red);
+  font-size: 11px;
+  font-family: var(--font-mono);
+  padding: 4px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.browse-delete:hover{ background: var(--stamp-red); color: #FBF7EC; border-color: var(--stamp-red); }
 
 @media (max-width: 560px){
   .browse-row{ flex-wrap: wrap; }
