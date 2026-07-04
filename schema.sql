@@ -34,7 +34,7 @@ create table if not exists admin_secret (
 
 -- 실제 관리자 코드로 아래 'CHANGE-THIS-CODE' 부분을 바꿔서 한 번만 실행하세요.
 insert into admin_secret (id, code_hash)
-values (1, crypt('CHANGE-THIS-CODE', gen_salt('bf')))
+values (1, crypt('dv20260704', gen_salt('bf')))
 on conflict (id) do update set code_hash = excluded.code_hash;
 
 -- admin_secret은 RLS를 켜두고 아무 정책도 만들지 않아 REST로는 완전히 비공개입니다.
@@ -47,7 +47,7 @@ returns boolean
 language sql
 stable
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
   select exists (
     select 1 from admin_secret

@@ -1,6 +1,6 @@
 /* ====== 여기 두 값만 본인 Supabase 프로젝트 값으로 바꾸면 됩니다 ====== */
-const SUPABASE_URL = "https://YOUR-PROJECT-ref.supabase.co";
-const SUPABASE_ANON_KEY = "YOUR-ANON-PUBLIC-KEY";
+const SUPABASE_URL = "https://bgscgliobkzjyinicywk.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_Vo0aDOarcEdbGP-jay4yug_Mwj7M1mP";
 /* ================================================================== */
 
 const ADMIN_CODE_KEY = "friendcode_admin_code"; // 브라우저 세션에만 저장, 새로고침 시 유지
