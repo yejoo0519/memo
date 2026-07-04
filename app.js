@@ -13,7 +13,7 @@ if (!window.supabase) {
   throw new Error("supabase-js failed to load: window.supabase is undefined");
 }
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const codeInput = document.getElementById("codeInput");
 const searchBtn = document.getElementById("searchBtn");
@@ -86,7 +86,7 @@ async function searchCode() {
   searchHint.textContent = "조회 중...";
   searchHint.className = "hint";
 
-  const { data, error } = await supabase
+  const { data, error } = await sb
     .from("sanction_records")
     .select("*")
     .eq("friend_code", code)
