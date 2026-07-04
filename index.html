@@ -65,6 +65,21 @@
 
     </section>
 
+    <section class="browse-slot">
+      <div class="browse-head">
+        <h2>전체 기록</h2>
+        <div class="filter-tabs" id="filterTabs">
+          <button class="filter-tab active" data-cat="all">전체</button>
+          <button class="filter-tab" data-cat="계정회수">계정회수</button>
+          <button class="filter-tab" data-cat="버그악용제재">버그악용제재</button>
+          <button class="filter-tab" data-cat="기타메모">기타메모</button>
+        </div>
+      </div>
+      <ul id="browseList" class="browse-list"></ul>
+      <p id="browseEmpty" class="empty-state" hidden>등록된 기록이 없습니다.</p>
+      <p id="browseHint" class="hint"></p>
+    </section>
+
   </main>
 
   <div id="loginOverlay" class="overlay" hidden>

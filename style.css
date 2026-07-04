@@ -358,3 +358,111 @@ body{
   .card-code{ font-size: 20px; }
   .search-row{ flex-direction: column; }
 }
+
+/* ---------- browse / full list ---------- */
+.browse-slot{
+  margin-top: 56px;
+  padding-top: 32px;
+  border-top: 1px solid var(--hairline);
+}
+
+.browse-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.browse-head h2{
+  font-family: var(--font-display);
+  font-size: 16px;
+  margin: 0;
+  color: var(--text-hi);
+}
+
+.filter-tabs{
+  display:flex;
+  gap:6px;
+  flex-wrap: wrap;
+}
+.filter-tab{
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.5px;
+  background: transparent;
+  border: 1px solid var(--hairline);
+  color: var(--text-mid);
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+.filter-tab:hover{ color: var(--text-hi); border-color: var(--text-mid); }
+.filter-tab.active{
+  background: var(--stamp-red);
+  border-color: var(--stamp-red);
+  color: #FBF7EC;
+}
+
+.browse-list{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.browse-row{
+  display:flex;
+  align-items:baseline;
+  gap:14px;
+  background: var(--panel);
+  border: 1px solid var(--hairline);
+  border-left: 3px solid var(--hairline);
+  border-radius: 4px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: border-color 0.12s ease, transform 0.08s ease;
+}
+.browse-row:hover{
+  border-color: var(--text-mid);
+  transform: translateX(2px);
+}
+.browse-row.cat-계정회수{ border-left-color: var(--stamp-red); }
+.browse-row.cat-버그악용제재{ border-left-color: #b5651d; }
+.browse-row.cat-기타메모{ border-left-color: #6b7c8e; }
+
+.browse-code{
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text-hi);
+  flex-shrink: 0;
+}
+.browse-cat{
+  font-size: 11.5px;
+  color: var(--text-mid);
+  flex-shrink: 0;
+}
+.browse-content{
+  font-size: 13px;
+  color: var(--text-mid);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+.browse-date{
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+
+@media (max-width: 560px){
+  .browse-row{ flex-wrap: wrap; }
+  .browse-content{ white-space: normal; flex-basis: 100%; order: 5; }
+}

@@ -39,6 +39,13 @@ const loginSubmit = document.getElementById("loginSubmit");
 const loginCancel = document.getElementById("loginCancel");
 const loginStatus = document.getElementById("loginStatus");
 
+const filterTabs = document.getElementById("filterTabs");
+const browseList = document.getElementById("browseList");
+const browseEmpty = document.getElementById("browseEmpty");
+const browseHint = document.getElementById("browseHint");
+
+let currentFilter = "all";
+
 let currentCode = null;
 let isAdmin = false;
 let adminClient = null; // 관리자 코드가 헤더로 실리는 전용 클라이언트
@@ -136,6 +143,62 @@ function renderCard(code, records) {
   }
 }
 
+/* ---------- 전체 기록 목록 ---------- */
+async function loadBrowseList(category) {
+  browseHint.textContent = "불러오는 중...";
+  browseHint.className = "hint";
+  browseList.innerHTML = "";
+  browseEmpty.hidden = true;
+
+  let query = sb
+    .from("sanction_records")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(200);
+
+  if (category !== "all") {
+    query = query.eq("category", category);
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    browseHint.textContent = "목록을 불러오지 못했습니다: " + error.message;
+    browseHint.className = "hint error";
+    return;
+  }
+
+  browseHint.textContent = "";
+
+  if (!data || data.length === 0) {
+    browseEmpty.hidden = false;
+    return;
+  }
+
+  for (const r of data) {
+    const li = document.createElement("li");
+    li.className = "browse-row cat-" + r.category;
+    const date = new Date(r.created_at).toLocaleDateString("ko-KR");
+    li.innerHTML = `
+      <span class="browse-code"></span>
+      <span class="browse-cat"></span>
+      <span class="browse-content"></span>
+      <span class="browse-date">${date}</span>
+    `;
+    li.querySelector(".browse-code").textContent = r.friend_code;
+    li.querySelector(".browse-cat").textContent = r.category;
+    li.querySelector(".browse-content").textContent = r.content;
+
+    li.addEventListener("click", () => {
+      codeInput.value = r.friend_code;
+      searchCode();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    browseList.appendChild(li);
+  }
+}
+
 /* ---------- 메모 등록 ---------- */
 async function addRecord() {
   if (!currentCode || !adminClient) return;
@@ -167,6 +230,7 @@ async function addRecord() {
   addStatus.textContent = "등록되었습니다.";
   addStatus.className = "hint ok";
   searchCode(); // 최신 목록 새로고침
+  loadBrowseList(currentFilter);
 }
 
 /* ---------- 로그인 / 로그아웃 ---------- */
@@ -228,6 +292,16 @@ codeSecretInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") submitLogin();
 });
 
+filterTabs.addEventListener("click", (e) => {
+  const btn = e.target.closest(".filter-tab");
+  if (!btn) return;
+  currentFilter = btn.dataset.cat;
+  for (const el of filterTabs.querySelectorAll(".filter-tab")) {
+    el.classList.toggle("active", el === btn);
+  }
+  loadBrowseList(currentFilter);
+});
+
 /* ---------- 초기화: 세션에 저장된 코드가 있으면 재검증 ---------- */
 (async function init() {
   const savedCode = sessionStorage.getItem(ADMIN_CODE_KEY);
@@ -235,4 +309,5 @@ codeSecretInput.addEventListener("keydown", (e) => {
     await verifyAndSetAdmin(savedCode);
   }
   updateAdminUI();
+  loadBrowseList(currentFilter);
 })();
