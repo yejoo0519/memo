@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>친구코드 기록부</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-mark">§</span>
+        <div class="brand-text">
+          <h1>친구코드 기록부</h1>
+          <p>코드를 조회해서 등록된 이력을 확인하세요</p>
+        </div>
+      </div>
+      <button id="adminToggle" class="ghost-btn">관리자</button>
+    </div>
+  </header>
+
+  <main class="drawer">
+
+    <section class="search-slot">
+      <label for="codeInput" class="drawer-label">FRIEND CODE</label>
+      <div class="search-row">
+        <input id="codeInput" type="text" inputmode="numeric" autocomplete="off" placeholder="예) 12345678" />
+        <button id="searchBtn" class="primary-btn">조회</button>
+      </div>
+      <p id="searchHint" class="hint"></p>
+    </section>
+
+    <section id="resultArea" class="result-area" hidden>
+
+      <div id="card" class="card">
+        <div class="card-tab" id="cardTab">CASE FILE</div>
+        <div class="stamp-slot" id="stampSlot"></div>
+
+        <div class="card-head">
+          <span class="card-code-label">FRIEND CODE</span>
+          <span id="cardCode" class="card-code"></span>
+        </div>
+
+        <ul id="recordList" class="record-list"></ul>
+        <p id="emptyState" class="empty-state" hidden>등록된 이력이 없습니다.</p>
+      </div>
+
+      <section id="adminPanel" class="admin-panel" hidden>
+        <h2>메모 추가</h2>
+        <label class="field-label" for="categorySelect">분류</label>
+        <select id="categorySelect">
+          <option value="계정회수">계정회수</option>
+          <option value="버그악용제재">버그악용제재</option>
+          <option value="기타메모">기타메모</option>
+        </select>
+        <label class="field-label" for="contentInput">내용</label>
+        <textarea id="contentInput" rows="3" placeholder="상세 내용을 입력하세요"></textarea>
+        <button id="addBtn" class="primary-btn">등록</button>
+        <p id="addStatus" class="hint"></p>
+      </section>
+
+    </section>
+
+  </main>
+
+  <div id="loginOverlay" class="overlay" hidden>
+    <div class="login-box">
+      <h2>관리자 코드 입력</h2>
+      <label class="field-label" for="codeSecretInput">관리자 코드</label>
+      <input id="codeSecretInput" type="password" autocomplete="off" />
+      <div class="login-actions">
+        <button id="loginCancel" class="ghost-btn">취소</button>
+        <button id="loginSubmit" class="primary-btn">확인</button>
+      </div>
+      <p id="loginStatus" class="hint"></p>
+    </div>
+  </div>
+
+  <footer class="foot">
+    <span>개인 운영 기록용 사이트 · 관리자만 기록을 추가할 수 있습니다</span>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+</body>
+</html>
